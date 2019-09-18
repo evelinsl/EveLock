@@ -30,12 +30,12 @@ string DIALOG_EXIT = "Close";
 ///
 reportState()
 {
-    string lockState = "locked";
+    string lockState = "locked"; 
     if(locked == FALSE)
         lockState = "unlocked";
         
     llSay(0, llGetDisplayName(llGetOwner()) + " " + type + " is " + lockState);
-}
+} 
 
 
 ///
@@ -148,6 +148,19 @@ lock()
 
 
 ///
+/// Relock the item after a login
+///
+relock()
+{
+    if(!locked)
+        return;
+        
+    llOwnerSay("@detach=n");
+    llSay(0, "Your " + type + " has been locked!"); 
+}
+
+
+///
 /// Lets the current owner return the key
 ///
 leaveKey()
@@ -195,6 +208,12 @@ default
     {   
         dialogChannel = -1 - (integer)("0x" + llGetSubString((string)llGetKey(), -7, -1));
         dialogListenHandler = llListen(dialogChannel, "", llGetOwner(), ""); 
+    }
+    
+    
+    attach(key id)
+    {
+        relock();
     }
     
 
