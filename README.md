@@ -1,4 +1,4 @@
-# rlv-lockscript
+# EveLock  
 
 A simple rlv lock script that can be used to lock clothing items. 
 
