@@ -217,9 +217,7 @@ default
     
     timer()
     {
-        llSetTimerEvent(0);
-        llSay(PUBLIC_CHANNEL, "Timeout");
-        dialogUser = NULL_KEY;
+        freeDialog();
     }
     
         
