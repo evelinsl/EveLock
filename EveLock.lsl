@@ -1,5 +1,5 @@
 ///
-/// evelin (evilevelin)'s RLV lock script, v1.0
+/// evelin (evilevelin)'s RLV lock script, v1.1
 ///
 /// You are free to use this script for personal items.
 /// You are NOT allowed to sell items with this script in it.
@@ -17,12 +17,42 @@ key ownerKey = NULL_KEY;
 key dialogUser = NULL_KEY;
 integer dialogListenHandler;
 integer dialogChannel;
+integer startTime;
 
 string DIALOG_LOCK = "Lock";
 string DIALOG_UNLOCK = "Unlock";
 string DIALOG_TAKE_KEY = "Take the key";
 string DIALOG_LEAVE_THE_KEY = "Leave key";
 string DIALOG_EXIT = "Close";
+
+///
+/// Makes sure that an single digit number
+/// ends up as a double digit string
+///
+string pad(integer time)
+{
+    if(time < 9)
+        return "0" + (string)time;
+    
+    return (string)time;    
+}
+
+
+///
+/// Returns the time a person has been locked
+///
+string getLockTime()
+{
+    integer passed = llGetUnixTime() - startTime;
+    
+    integer seconds = passed % 60;
+    integer minutes = passed / 60 % 60;
+    integer hours = passed / 3600 % 24;
+    
+    return pad(hours) 
+        + ":" + pad(minutes)
+        + ":" + pad(seconds);
+}
 
 
 ///
@@ -57,6 +87,9 @@ showMenu()
     message += "Worn by: " + wearer + "\n";
     message += "Locked: " + lockState + "\n";
     message += "Key holder: " + owner + "\n";
+    
+    if(locked)
+        message += "Time locked: " + getLockTime() + "\n";
     
     llDialog(dialogUser, message, getMenuButtons(), dialogChannel);
 }
@@ -122,6 +155,8 @@ unlock()
     }
     
     locked = FALSE;
+    startTime = 0;
+    
     llOwnerSay("@detach=y");
     
     llSay(0, llGetDisplayName(llGetOwner()) + "'s " + type + " is now unlocked.");
@@ -141,6 +176,8 @@ lock()
     }
     
     locked = TRUE;
+    startTime = llGetUnixTime();
+    
     llOwnerSay("@detach=n");
     
     llSay(0, llGetDisplayName(llGetOwner()) + "'s " + type + " is now locked!");
