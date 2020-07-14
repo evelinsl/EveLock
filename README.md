@@ -8,6 +8,12 @@ If you use this script to lock parts for yourself, you can make yourself the own
 
 You can edit the value of `type` to change it to whatever it is you place this script it.
 
+## Changelog
+
+Version 1.1:
+
+- Added the lock time to the menu
+
 ## License
 
 - You are free to use and modify this script for personal usage.
